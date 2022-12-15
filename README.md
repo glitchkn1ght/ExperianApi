@@ -12,6 +12,8 @@
 
 - I differentiated objects received from the api to those included in responses to the client. I think this is generally considered good practice and i wanted make the names a bit more explicit but is perhaps unneccessary. 
 
+- The unit testing is meant to be illustrative of understanding rather than exhaustive. It's the first thing i would improve given more time. 
+
 ## General Areas for improvement
   - More extensive unit testing to cover all classes and edge cases, particularly in the mapper which i feel could be broken with certain combinations of data.
   - Integration/PACT testing.
