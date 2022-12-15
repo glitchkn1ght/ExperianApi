@@ -1,5 +1,6 @@
 ﻿using ExperianApi.Interfaces;
 using ExperianApi.Models.Response.PhotoAlbum;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -22,6 +23,9 @@ namespace ExperianApi.Controllers
         }
 
         [HttpGet("Get")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PhotoAlbumResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(PhotoAlbumResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(PhotoAlbumResponse))]
         public async Task<IActionResult> Get(int? userId)
         {
             PhotoAlbumResponse response = new PhotoAlbumResponse();
