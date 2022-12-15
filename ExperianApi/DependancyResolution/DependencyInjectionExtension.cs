@@ -1,4 +1,5 @@
 ﻿using ExperianApi.BusinessLogic;
+using ExperianApi.ClientHandler;
 using ExperianApi.Interfaces;
 using ExperianApi.Mappers;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +13,9 @@ namespace ExperianApi.DependancyResolution
         {
             services.AddScoped<IPhotoAlbumMapper, PhotoAlbumMapper>();
 
-            services.AddHttpClient<IPhotoAlbumService>();
+            services.AddHttpClient<IHttpClientWrapper>();
+
+            services.AddScoped<IHttpClientWrapper, HttpClientWrapper>();
 
             services.AddScoped<IPhotoAlbumService, PhotoAlbumService>();
 

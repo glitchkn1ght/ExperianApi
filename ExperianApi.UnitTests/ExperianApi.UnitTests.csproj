@@ -13,4 +13,9 @@
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ControllerTests\" />
+    <Folder Include="MapperTests\" />
+  </ItemGroup>
+
 </Project>

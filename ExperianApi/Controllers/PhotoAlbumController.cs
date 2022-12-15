@@ -25,27 +25,20 @@ namespace ExperianApi.Controllers
         [HttpGet("Get")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PhotoAlbumResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(PhotoAlbumResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(PhotoAlbumResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(PhotoAlbumResponse))]
         public async Task<IActionResult> Get(int? userId)
         {
             PhotoAlbumResponse response = new PhotoAlbumResponse();
             try
             {
-                if (userId == 0)
-                {
-                    response.IsSuccess = false;
-                    response.Message = "Validation of userId failed, please check input.";
-
-                    return new BadRequestObjectResult(response);
-                }
-
                 string LogMsg = userId.HasValue ? $"PhotoAlbum data foruserId {userId}.": "all PhotoAlbum data.";
 
                 this.Logger.LogInformation($"[Operation=Get(Company)], Status=Success, Message=Attempting to retrieve {LogMsg}");
 
                 response = await this.ResponseOrchestrator.GetAlbumsWithPhotos(userId);
 
-                return new OkObjectResult(response);
+                return response.IsSuccess? new OkObjectResult(response) : new ObjectResult(response) { StatusCode = 500 };
             }
             catch (Exception ex)
             {

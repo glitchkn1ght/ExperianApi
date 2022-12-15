@@ -1,6 +1,5 @@
 ﻿using ExperianApi.Interfaces;
 using ExperianApi.Models.jsonplaceholder;
-using ExperianApi.Models.Photos;
 using ExperianApi.Models.Response.PhotoAlbum;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -17,18 +16,18 @@ namespace WeatherWindowsService.WeatherApi.Service
     {
         private readonly ILogger<PhotoAlbumService> Logger;
         private readonly ApiSettings ApiSettings;
-        private readonly HttpClient Client;
+        private readonly IHttpClientWrapper ClientWrapper;
 
         public PhotoAlbumService(
                 ILogger<PhotoAlbumService> logger,  
-                IOptions<ApiSettings> apiSettings, 
-                HttpClient httpClient)
+                IOptions<ApiSettings> apiSettings,
+                IHttpClientWrapper clientWrapper)
         {
 
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.ApiSettings = apiSettings.Value;
-            this.Client = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            this.Client.BaseAddress = new Uri(ApiSettings.BaseURL);
+            this.ClientWrapper = clientWrapper ?? throw new ArgumentNullException(nameof(clientWrapper));
+            this.ClientWrapper.SetBaseAddress(new Uri(ApiSettings.BaseURL));
         }
 
         public async Task<AlbumResponse> GetAlbums(int? userId)
@@ -42,7 +41,7 @@ namespace WeatherWindowsService.WeatherApi.Service
                 resource += $"?userId={userId}";
             }
 
-            var rawResponse = await this.Client.GetAsync(resource);
+            var rawResponse = await this.ClientWrapper.GetAsync(resource);
 
             if (rawResponse.IsSuccessStatusCode)
             {
@@ -57,8 +56,6 @@ namespace WeatherWindowsService.WeatherApi.Service
                 Logger.LogWarning($"[Operation=GetAlbums(PhotoAlbumService)], Status=Failure, Message=Non success code received from album endpoint.");
 
                 albumResponse.IsSuccess = false;
-
-                albumResponse.Message = "Failure";
             }
 
             return albumResponse;
@@ -75,7 +72,7 @@ namespace WeatherWindowsService.WeatherApi.Service
                 resource += $"?userId={userId}";
             }
 
-            var rawResponse = await this.Client.GetAsync(resource);
+            var rawResponse = await this.ClientWrapper.GetAsync(resource);
 
             if (rawResponse.IsSuccessStatusCode)
             {
@@ -90,8 +87,6 @@ namespace WeatherWindowsService.WeatherApi.Service
                 Logger.LogWarning($"[Operation=GetPhotos(PhotoAlbumService)], Status=Failure, Message=Non success code received from photo endpoint.");
 
                 photoResponse.IsSuccess = false;
-
-                photoResponse.Message = "Failure";
             }
 
             return photoResponse;

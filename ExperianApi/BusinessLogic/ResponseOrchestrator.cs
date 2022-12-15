@@ -21,25 +21,25 @@ namespace ExperianApi.BusinessLogic
 
         public async Task<PhotoAlbumResponse> GetAlbumsWithPhotos(int? userId)
         {
-            PhotoAlbumResponse combinedResponse= new PhotoAlbumResponse();
+            PhotoAlbumResponse photoAlbumResponse= new PhotoAlbumResponse();
 
             AlbumResponse albumResponse = await this.AlbumService.GetAlbums(userId);
             PhotoResponse photoResponse = await this.AlbumService.GetPhotos(userId);
 
             if (!(albumResponse.IsSuccess) || !(photoResponse.IsSuccess))
             {
-                combinedResponse.IsSuccess = false;
+                photoAlbumResponse.IsSuccess = false;
 
-                combinedResponse.Message = $"Non success code received from one or both endpoints JP_Album: {albumResponse.Message}, Photo {albumResponse.Message}";
+                photoAlbumResponse.Message = $"Non success code received from one or both endpoints JP_Album: Check logs for details.";
 
-                return combinedResponse;
+                return photoAlbumResponse;
             }
 
-            combinedResponse = this.PhotoAlbumMapper.MapPhotosToAlbums(albumResponse, photoResponse);
+            photoAlbumResponse = this.PhotoAlbumMapper.MapPhotosToAlbums(albumResponse, photoResponse);
 
-            combinedResponse.IsSuccess = true;
+            photoAlbumResponse.IsSuccess = true;
 
-            return combinedResponse;
+            return photoAlbumResponse;
         }
     }
 }
