@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace ExperianApi
 {
@@ -15,6 +16,7 @@ namespace ExperianApi
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                }).UseSerilog((hostingContext, loggerConfig) =>
+                 loggerConfig.ReadFrom.Configuration(hostingContext.Configuration));
     }
 }

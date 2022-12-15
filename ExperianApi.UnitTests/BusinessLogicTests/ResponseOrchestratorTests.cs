@@ -13,6 +13,8 @@ namespace ExperianApi.UnitTests.BusinessLogicTests
 {
     public class ResponseOrchestratorTests
     {
+        private Mock<ILogger<ResponseOrchestrator>> LoggerMock;
+
         private Mock<IPhotoAlbumService> AlbumService;
 
         private Mock<IPhotoAlbumMapper> PhotoAlbumMapper;
@@ -25,10 +27,11 @@ namespace ExperianApi.UnitTests.BusinessLogicTests
         public void Setup()
         {
             this.TestData = new TestData();
+            this.LoggerMock = new Mock<ILogger<ResponseOrchestrator>>();
             this.AlbumService = new Mock<IPhotoAlbumService>();
             this.PhotoAlbumMapper = new Mock<IPhotoAlbumMapper>();
 
-            this.ResponseOrchestrator = new ResponseOrchestrator(this.AlbumService.Object, this.PhotoAlbumMapper.Object);
+            this.ResponseOrchestrator = new ResponseOrchestrator(this.LoggerMock.Object, this.AlbumService.Object, this.PhotoAlbumMapper.Object);
         }
 
         [Test]

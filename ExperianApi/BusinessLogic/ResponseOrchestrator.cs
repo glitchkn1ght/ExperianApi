@@ -1,5 +1,6 @@
 ﻿using ExperianApi.Interfaces;
 using ExperianApi.Models.Response.PhotoAlbum;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -7,11 +8,13 @@ namespace ExperianApi.BusinessLogic
 {
     public class ResponseOrchestrator : IResponseOrchestrator
     {
+        private readonly ILogger<ResponseOrchestrator> Logger;
         private readonly IPhotoAlbumService AlbumService;
         private readonly IPhotoAlbumMapper PhotoAlbumMapper;
 
-        public ResponseOrchestrator(IPhotoAlbumService albumService, IPhotoAlbumMapper photoAlbumMapper)
+        public ResponseOrchestrator( ILogger<ResponseOrchestrator> logger, IPhotoAlbumService albumService, IPhotoAlbumMapper photoAlbumMapper)
         {
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.AlbumService = albumService ?? throw new ArgumentNullException(nameof(albumService));
             this.PhotoAlbumMapper = photoAlbumMapper ?? throw new ArgumentNullException(nameof(photoAlbumMapper));
         }
@@ -27,7 +30,7 @@ namespace ExperianApi.BusinessLogic
             {
                 photoAlbumResponse.IsSuccess = false;
 
-                photoAlbumResponse.Message = "Non success code received from one or both endpoints, check logs for details.";
+                photoAlbumResponse.Message = "Non success code received from one or both endpointsheck logs for details.";
 
                 return photoAlbumResponse;
             }
@@ -35,6 +38,8 @@ namespace ExperianApi.BusinessLogic
             photoAlbumResponse.Albums = this.PhotoAlbumMapper.MapPhotosToAlbums(albumResponse, photoResponse);
 
             photoAlbumResponse.IsSuccess = true;
+
+            this.Logger.LogInformation($"[Operation=GetAlbumsWithPhotos(ResponseOrchestrator)], Status=Success, Message=Successfully retrieved and mapped PhotoAlbum data");
 
             return photoAlbumResponse;
         }
