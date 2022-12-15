@@ -22,7 +22,7 @@ namespace ExperianApi.Controllers
             this.ResponseOrchestrator = responseOrchestrator ?? throw new ArgumentNullException(nameof(responseOrchestrator));
         }
 
-        [HttpGet("Get")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PhotoAlbumResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(PhotoAlbumResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(PhotoAlbumResponse))]

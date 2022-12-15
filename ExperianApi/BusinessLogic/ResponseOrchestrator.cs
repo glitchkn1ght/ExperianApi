@@ -30,7 +30,7 @@ namespace ExperianApi.BusinessLogic
             {
                 photoAlbumResponse.IsSuccess = false;
 
-                photoAlbumResponse.Message = $"Non success code received from one or both endpoints JP_Album: Check logs for details.";
+                photoAlbumResponse.Message = "Non success code received from one or both endpoints, check logs for details.";
 
                 return photoAlbumResponse;
             }
