@@ -57,6 +57,5 @@ namespace ExperianApi.Mappers
 
             return mappedPhoto;
         }
-
     }
 }

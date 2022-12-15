@@ -21,16 +21,27 @@ namespace ExperianApi.Controllers
             this.ResponseOrchestrator = responseOrchestrator ?? throw new ArgumentNullException(nameof(responseOrchestrator));
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("Get")]
         public async Task<IActionResult> Get(int? userId)
         {
             PhotoAlbumResponse response = new PhotoAlbumResponse();
-
             try
             {
+                if (userId == 0)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Validation of userId failed, please check input.";
+
+                    return new BadRequestObjectResult(response);
+                }
+
+                string LogMsg = userId.HasValue ? $"PhotoAlbum data foruserId {userId}.": "all PhotoAlbum data.";
+
+                this.Logger.LogInformation($"[Operation=Get(Company)], Status=Success, Message=Attempting to retrieve {LogMsg}");
+
                 response = await this.ResponseOrchestrator.GetAlbumsWithPhotos(userId);
 
-                return Ok(response.Albums);
+                return new OkObjectResult(response);
             }
             catch (Exception ex)
             {
@@ -46,7 +57,7 @@ namespace ExperianApi.Controllers
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
-             return await this.Get(null);
+            return await this.Get(null);
         }
     }
 }
