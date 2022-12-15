@@ -1,6 +1,5 @@
 ﻿using ExperianApi.Interfaces;
 using ExperianApi.Models.Response.PhotoAlbum;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 

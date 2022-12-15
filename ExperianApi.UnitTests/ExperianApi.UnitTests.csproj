@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MapperTests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ExperianApi\ExperianApi.csproj" />
   </ItemGroup>
 
