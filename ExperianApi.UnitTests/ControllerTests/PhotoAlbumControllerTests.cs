@@ -89,7 +89,6 @@ namespace ExperianApi.UnitTests.ControllerTests
 
             ObjectResult expected = new OkObjectResult(expectedFromOrchestrator);
 
-
             ObjectResult actual = (ObjectResult)this.PhotoAlbumController.Get(1).Result;
 
             Assert.IsInstanceOf<PhotoAlbumResponse>(actual.Value);
@@ -107,6 +106,27 @@ namespace ExperianApi.UnitTests.ControllerTests
             };
 
             this.ResponseOrchestratorMock.Setup(x => x.GetAlbumsWithPhotos(It.IsAny<int>())).Returns(Task.FromResult(expectedFromOrchestrator));
+
+            ObjectResult expected = new ObjectResult(expectedFromOrchestrator) { StatusCode = 500 };
+
+
+            ObjectResult actual = (ObjectResult)this.PhotoAlbumController.Get(1).Result;
+
+            Assert.IsInstanceOf<PhotoAlbumResponse>(actual.Value);
+            Assert.AreEqual(500, actual.StatusCode);
+            Assert.AreEqual(false, ((PhotoAlbumResponse)actual.Value).IsSuccess);
+        }
+
+        [Test]
+        public void WhenExceptionThrown_ThenReturn500InternalServerError()
+        {
+            PhotoAlbumResponse expectedFromOrchestrator = new PhotoAlbumResponse
+            {
+                IsSuccess = false,
+                Message = "Internal Server Error"
+            };
+
+            this.ResponseOrchestratorMock.Setup(x => x.GetAlbumsWithPhotos(It.IsAny<int>())).Throws(new Exception());
 
             ObjectResult expected = new ObjectResult(expectedFromOrchestrator) { StatusCode = 500 };
 

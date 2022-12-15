@@ -1,9 +1,11 @@
-﻿using ExperianApi.Models.Response.PhotoAlbum;
+﻿using ExperianApi.Models.Photos;
+using ExperianApi.Models.Response.PhotoAlbum;
+using System.Collections.Generic;
 
 namespace ExperianApi.Interfaces
 {
     public interface IPhotoAlbumMapper
     {
-        public PhotoAlbumResponse MapPhotosToAlbums(AlbumResponse albumResponse, PhotoResponse photoResponse);
+        public List<Album> MapPhotosToAlbums(AlbumResponse albumResponse, PhotoResponse photoResponse);
     }
 }

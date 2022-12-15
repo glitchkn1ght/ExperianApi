@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="MapperTests\" />
-    <Folder Include="ServiceTests\" />
   </ItemGroup>
 
   <ItemGroup>

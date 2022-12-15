@@ -8,13 +8,11 @@ namespace ExperianApi.BusinessLogic
 {
     public class ResponseOrchestrator : IResponseOrchestrator
     {
-        private readonly ILogger<ResponseOrchestrator> Logger;
         private readonly IPhotoAlbumService AlbumService;
         private readonly IPhotoAlbumMapper PhotoAlbumMapper;
 
-        public ResponseOrchestrator( ILogger<ResponseOrchestrator> logger, IPhotoAlbumService albumService, IPhotoAlbumMapper photoAlbumMapper)
+        public ResponseOrchestrator(IPhotoAlbumService albumService, IPhotoAlbumMapper photoAlbumMapper)
         {
-            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.AlbumService = albumService ?? throw new ArgumentNullException(nameof(albumService));
             this.PhotoAlbumMapper = photoAlbumMapper ?? throw new ArgumentNullException(nameof(photoAlbumMapper));
         }
@@ -35,7 +33,7 @@ namespace ExperianApi.BusinessLogic
                 return photoAlbumResponse;
             }
 
-            photoAlbumResponse = this.PhotoAlbumMapper.MapPhotosToAlbums(albumResponse, photoResponse);
+            photoAlbumResponse.Albums = this.PhotoAlbumMapper.MapPhotosToAlbums(albumResponse, photoResponse);
 
             photoAlbumResponse.IsSuccess = true;
 

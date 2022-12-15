@@ -2,34 +2,35 @@
 using ExperianApi.Models.jsonplaceholder;
 using ExperianApi.Models.Photos;
 using ExperianApi.Models.Response.PhotoAlbum;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ExperianApi.Mappers
 {
     public class PhotoAlbumMapper: IPhotoAlbumMapper
     {
-        public PhotoAlbumResponse MapPhotosToAlbums(AlbumResponse albumResponse,PhotoResponse photoResponse) 
+        public List<Album> MapPhotosToAlbums(AlbumResponse albumResponse,PhotoResponse photoResponse) 
         {
-            PhotoAlbumResponse albumPhotoResponse = new PhotoAlbumResponse();
+            List<Album> albums = new List<Album>();
 
             albumResponse.Albums = albumResponse.Albums.OrderBy(x => x.Id).ToList();
             photoResponse.Photos = photoResponse.Photos.OrderBy(x => x.AlbumId).ToList();
 
             for(var i=0; i < albumResponse.Albums.Count; i++)
             {
-                albumPhotoResponse.Albums.Add(this.MapAlbumFromApiResponse(albumResponse.Albums[i]));
+                albums.Add(this.MapAlbumFromApiResponse(albumResponse.Albums[i]));
 
                 foreach (JP_Photo photo in photoResponse.Photos.ToList())
                 {
-                    if(photo.AlbumId == albumPhotoResponse.Albums[i].AlbumId)
+                    if(photo.AlbumId == albums[i].AlbumId)
                     {
-                        albumPhotoResponse.Albums[i].AlbumPhotos.Add(this.MapPhotoFromApiResponse(photo));
+                        albums[i].AlbumPhotos.Add(this.MapPhotoFromApiResponse(photo));
                         photoResponse.Photos.Remove(photo);
                     }
                 }
             }
 
-            return albumPhotoResponse;
+            return albums;
         }
 
         public Album MapAlbumFromApiResponse(JP_Album album)
